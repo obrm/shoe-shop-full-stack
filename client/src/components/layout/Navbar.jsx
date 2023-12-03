@@ -4,7 +4,7 @@ import { useGlobalAuthContext } from "../../hooks";
 import NavListItem from './NavListItem';
 
 const Navbar = () => {
-  const { user, logout } = useGlobalAuthContext();
+  const { user, loading, logout } = useGlobalAuthContext();
 
   const navListItems = [
     {
@@ -30,7 +30,7 @@ const Navbar = () => {
         ))}
       </ul>
       <div className="log-in-and-out">
-        {user ? (
+        {user && !loading ? (
           <>
             <p className="user-name">{`Hello ${user.name}`}</p>
             <Link

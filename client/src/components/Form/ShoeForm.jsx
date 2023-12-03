@@ -5,7 +5,7 @@ import Input from './Input';
 import './style.css';
 
 const ShoeForm = ({ shoeId, btnText }) => {
-    const { shoe, errors, handleChange, handleSubmit } = useShoeForm(shoeId);
+    const { shoe, loading, errors, handleChange, handleSubmit } = useShoeForm(shoeId);
 
     const fields = [
         {
@@ -41,6 +41,10 @@ const ShoeForm = ({ shoeId, btnText }) => {
             error: errors.price
         },
     ];
+
+    if (loading) {
+        return <div className='loading'>Loading...</div>;
+    }
 
     return (
         <form onSubmit={handleSubmit}>

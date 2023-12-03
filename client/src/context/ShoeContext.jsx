@@ -14,9 +14,9 @@ export const ShoeProvider = ({ children }) => {
     try {
       const shoesData = await shoeAPI.getAllShoes();
       setShoes(shoesData.data.data);
-      setIsLoading(false);
     } catch (err) {
       setError(err.response.data.error);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -27,18 +27,22 @@ export const ShoeProvider = ({ children }) => {
 
   const addNewShoe = async (shoe) => {
     try {
+      setIsLoading(true);
       const newShoe = await shoeAPI.addShoe(shoe);
       setShoes(prevShoes => ([...prevShoes, newShoe]));
       fetchShoes();
       showToast('Shoe added successfully');
     } catch (err) {
       setError(err.response.data.error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const editShoe = async (shoeData) => {
     try {
-      const updatedShoe = await shoeAPI.updateShoe(shoeData, shoeData.id);
+      setIsLoading(true);
+      const updatedShoe = await shoeAPI.updateShoe(shoeData.id, shoeData);
       setShoes((prevShoes) =>
         prevShoes.map((shoe) => (shoe.id === shoeData.id ? updatedShoe : shoe))
       );
@@ -46,11 +50,14 @@ export const ShoeProvider = ({ children }) => {
       showToast('Shoe updated successfully');
     } catch (err) {
       setError(err.response.data.error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const removeShoe = async (id) => {
     try {
+      setIsLoading(true);
       await shoeAPI.deleteShoe(id);
       setShoes((prevShoes) =>
         prevShoes.filter((shoe) => (shoe.id !== id))
@@ -59,6 +66,8 @@ export const ShoeProvider = ({ children }) => {
       showToast('Shoe deleted successfully');
     } catch (err) {
       setError(err.response.data.error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

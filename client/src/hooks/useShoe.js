@@ -11,6 +11,7 @@ const useShoe = () => {
   const navigate = useNavigate();
 
   const [shoe, setShoe] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const { removeShoe } = useGlobalShoeContext();
 
@@ -19,6 +20,7 @@ const useShoe = () => {
     const fetchShoe = async () => {
       const shoeData = await shoeAPI.getShoe(shoeId);
       setShoe(shoeData.data.data);
+      setLoading(false);
     };
 
     fetchShoe();
@@ -29,6 +31,6 @@ const useShoe = () => {
     navigate('/');
   };
 
-  return { shoe, handleDelete };
+  return { shoe, loading, handleDelete };
 };
 export default useShoe;

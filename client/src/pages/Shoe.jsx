@@ -7,7 +7,11 @@ import { useShoe } from '../hooks';
 const Shoe = () => {
     const { user } = useGlobalAuthContext();
 
-    const { shoe, handleDelete } = useShoe();
+    const { shoe, loading, handleDelete } = useShoe();
+
+    if (loading) {
+        return <div className='loading'>Loading...</div>;
+    }
 
     return (
         <main className='single-column-container'>

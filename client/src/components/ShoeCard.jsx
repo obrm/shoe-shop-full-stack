@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useGlobalAuthContext } from '../hooks';
 
 const ShoeCard = ({ id, name, brand, image, price }) => {
+  const { loading } = useGlobalAuthContext();
+
+  if (!image || loading) {
+    return <div className='loading'>Loading...</div>;
+  }
+
   return (
     <div className='shoe-container'>
       <h3 className='shoe-name'>
