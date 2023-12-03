@@ -24,7 +24,7 @@ const useShoeForm = (shoeId) => {
         if (shoeId) {
             const fetchShoe = async () => {
                 const shoeData = await shoeAPI.getShoe(shoeId);
-                setShoe(shoeData.data);
+                setShoe(shoeData.data.data);
             };
 
             fetchShoe();

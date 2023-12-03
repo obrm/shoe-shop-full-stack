@@ -29,6 +29,7 @@ export const ShoeProvider = ({ children }) => {
     try {
       const newShoe = await shoeAPI.addShoe(shoe);
       setShoes(prevShoes => ([...prevShoes, newShoe]));
+      fetchShoes();
       showToast('Shoe added successfully');
     } catch (err) {
       setError(err.response.data.error);
@@ -41,6 +42,7 @@ export const ShoeProvider = ({ children }) => {
       setShoes((prevShoes) =>
         prevShoes.map((shoe) => (shoe.id === shoeData.id ? updatedShoe : shoe))
       );
+      fetchShoes();
       showToast('Shoe updated successfully');
     } catch (err) {
       setError(err.response.data.error);
@@ -53,6 +55,7 @@ export const ShoeProvider = ({ children }) => {
       setShoes((prevShoes) =>
         prevShoes.filter((shoe) => (shoe.id !== id))
       );
+      fetchShoes();
       showToast('Shoe deleted successfully');
     } catch (err) {
       setError(err.response.data.error);
@@ -73,7 +76,7 @@ export const ShoeProvider = ({ children }) => {
       draggable: false,
       progress: undefined,
     });
-  }
+  };
   return (
     <ShoeContext.Provider
       value={{

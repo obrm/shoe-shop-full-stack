@@ -75,6 +75,12 @@ html {
   margin: 2rem 0;
 }
 
+.switch {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
 .not-found{
   font-size: 2rem;
   text-align: center;

@@ -1,32 +1,29 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API = axios.create({ baseURL: '/api/v1' });
 
-const request = async (method, endpoint, data = null) => {
-    const res = await axios({
-        method,
-        url: `${BASE_URL}${endpoint}`,
-        data,
-    });
-    return res.data;
+// Set token for all requests
+export const setAuthToken = (token) => {
+    if (token) {
+        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete API.defaults.headers.common['Authorization'];
+    }
 };
 
-export const getAllShoes = async () => {
-    return await request('get', '/');
+// Auth API endpoints
+export const authAPI = {
+    register: (userData) => API.post('/auth/register', userData),
+    login: (email, password) => API.post('/auth/login', { email, password }),
+    logout: () => API.get('/auth/logout'),
+    getCurrentUser: () => API.get('/auth/current-user'),
 };
 
-export const getShoe = async (shoeId) => {
-    return await request('get', `/${shoeId}`);
-};
-
-export const updateShoe = async (shoe, shoeId) => {
-    return await request('put', `/${shoeId}`, shoe);
-};
-
-export const addShoe = async (shoe) => {
-    return await request('post', '/', shoe);
-};
-
-export const deleteShoe = async (shoeId) => {
-    return await request('delete', `/${shoeId}`);
+// Shoe API endpoints
+export const shoeAPI = {
+    getAllShoes: () => API.get('/shoes'),
+    getShoe: (shoeId) => API.get(`/shoes/${shoeId}`),
+    updateShoe: (shoeId, shoe) => API.put(`/shoes/${shoeId}`, shoe),
+    addShoe: (shoe) => API.post('/shoes', shoe),
+    deleteShoe: (shoeId) => API.delete(`/shoes/${shoeId}`),
 };

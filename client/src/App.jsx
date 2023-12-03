@@ -4,10 +4,10 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useGlobalShoeContext } from './hooks';
+import { useGlobalAuthContext, useGlobalShoeContext } from './hooks';
 
 import {
-  LogIn,
+  Auth,
   Home,
   Shoe,
   ManageShoe,
@@ -30,8 +30,8 @@ const routes = [
         element: <ProtectedRoute><ManageShoe /> </ProtectedRoute>,
       },
       {
-        path: 'logIn',
-        element: <LogIn />,
+        path: 'auth',
+        element: <Auth />,
       },
       {
         path: 'products',
@@ -60,17 +60,19 @@ function App() {
   const toastId = useRef(null);
 
   const { error, clearError } = useGlobalShoeContext();
+  const { error: authError } = useGlobalAuthContext();
 
   useEffect(() => {
-    if (error) {
+    if (error || authError) {
+      const err = error || authError;
       if (!toast.isActive(toastId.current)) {
-        toastId.current = toast.error(error, {
+        toastId.current = toast.error(err, {
           position: "top-center",
           onClose: () => clearError()
         });
       }
     }
-  }, [error, clearError]);
+  }, [error, clearError, authError]);
 
   return (
     <>

@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router';
-
 import { useGlobalAuthContext } from ".";
 
-const useLogin = () => {
+const useAuthForm = (isRegister) => {
   const navigate = useNavigate();
-
-  const { login } = useGlobalAuthContext();
+  const { login, register } = useGlobalAuthContext();
 
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
     name: null,
+    email: null,
     password: null
   });
 
@@ -24,24 +24,29 @@ const useLogin = () => {
       [e.target.name]: e.target.value,
     });
 
-    setErrors(prevState => (
-      {
-        ...prevState,
-        [e.target.name]: null
-      }));
+    setErrors(prevState => ({
+      ...prevState,
+      [e.target.name]: null
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     let isValid = true;
-
     const newErrors = {};
 
-    if (formData.name.length < 3) {
-      newErrors.name = "name must bo at least 3 characters long";
+    if (isRegister) {
+      if (formData.name.length < 3) {
+        newErrors.email = "Please enter a valid email address";
+        isValid = false;
+      }
+    }
+
+    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
+
     if (formData.password.length < 6) {
       newErrors.password = "password must bo at least 6 characters long";
       isValid = false;
@@ -50,7 +55,11 @@ const useLogin = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      login(formData);
+      if (isRegister) {
+        register(formData);
+      } else {
+        login(formData.email, formData.password);
+      }
       navigate('/');
     }
   };
@@ -63,4 +72,4 @@ const useLogin = () => {
   };
 };
 
-export default useLogin;
+export default useAuthForm;

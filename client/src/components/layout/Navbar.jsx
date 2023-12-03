@@ -15,7 +15,7 @@ const Navbar = () => {
     {
       to: '/add',
       text: 'Add Shoe',
-      condition: user && user.isAdmin,
+      condition: user && user.role === 'admin',
     },
   ];
 
@@ -32,7 +32,7 @@ const Navbar = () => {
       <div className="log-in-and-out">
         {user ? (
           <>
-            <p className="user-name">{`hello ${user.name}`}</p>
+            <p className="user-name">{`Hello ${user.name}`}</p>
             <Link
               to='/'
               className='btn login-btn'
@@ -42,7 +42,7 @@ const Navbar = () => {
           </>
         ) : (
           <Link
-            to='/logIn'
+              to='/auth'
             className='btn login-btn'>
             Log In
           </Link>

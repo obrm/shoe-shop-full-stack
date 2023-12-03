@@ -1,7 +1,7 @@
 import useShoeForm from './useShoeForm';
 import { useGlobalAuthContext } from './useGlobalAuthContext';
-import useLoginForm from './useLoginForm';
 import { useGlobalShoeContext } from './useGlobalShoeContext';
 import useShoe from './useShoe';
+import useAuthForm from './useAuthForm';
 
-export { useShoeForm, useLoginForm, useShoe, useGlobalAuthContext, useGlobalShoeContext };
+export { useShoeForm, useAuthForm, useShoe, useGlobalAuthContext, useGlobalShoeContext };

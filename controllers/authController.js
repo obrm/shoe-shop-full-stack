@@ -8,13 +8,12 @@ import User from '../models/User.js';
 // @route   POST /api/v1/auth/register
 // @access  Public
 export const registerUser = asyncHandler(async (req, res, next) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   const user = await User.create({
     name,
     email,
     password,
-    role
   });
 
   // Send token to client
