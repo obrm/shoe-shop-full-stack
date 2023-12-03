@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
-
 import { shoeAPI } from '../api/api';
 
 export const ShoeContext = createContext();
@@ -11,11 +10,12 @@ export const ShoeProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const fetchShoes = async () => {
+    setIsLoading(true);
     try {
-      const shoesData = await shoeAPI.getAllShoes();
-      setShoes(shoesData.data.data);
+      const response = await shoeAPI.getAllShoes();
+      setShoes(response.data.data);
     } catch (err) {
-      setError(err.response.data.error);
+      setError(err.response?.data?.error || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -25,58 +25,8 @@ export const ShoeProvider = ({ children }) => {
     fetchShoes();
   }, []);
 
-  const addNewShoe = async (shoe) => {
-    try {
-      setIsLoading(true);
-      const newShoe = await shoeAPI.addShoe(shoe);
-      setShoes(prevShoes => ([...prevShoes, newShoe]));
-      fetchShoes();
-      showToast('Shoe added successfully');
-    } catch (err) {
-      setError(err.response.data.error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const editShoe = async (shoeData) => {
-    try {
-      setIsLoading(true);
-      const updatedShoe = await shoeAPI.updateShoe(shoeData.id, shoeData);
-      setShoes((prevShoes) =>
-        prevShoes.map((shoe) => (shoe.id === shoeData.id ? updatedShoe : shoe))
-      );
-      fetchShoes();
-      showToast('Shoe updated successfully');
-    } catch (err) {
-      setError(err.response.data.error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const removeShoe = async (id) => {
-    try {
-      setIsLoading(true);
-      await shoeAPI.deleteShoe(id);
-      setShoes((prevShoes) =>
-        prevShoes.filter((shoe) => (shoe.id !== id))
-      );
-      fetchShoes();
-      showToast('Shoe deleted successfully');
-    } catch (err) {
-      setError(err.response.data.error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const clearError = () => {
-    setError(null);
-  };
-
-  const showToast = (message) => {
-    toast.success(message, {
+  const showToast = (message, type = 'success') => {
+    toast[type](message, {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -86,6 +36,34 @@ export const ShoeProvider = ({ children }) => {
       progress: undefined,
     });
   };
+
+  const handleShoeAction = async (action, shoe, id = null) => {
+    setIsLoading(true);
+    try {
+      const response = id ? await action(shoe, id) : await action(shoe);
+      if (response) {
+        setShoes((prevShoes) =>
+          prevShoes.map((item) => (item.id === shoe.id ? response : item))
+        );
+      } else {
+        setShoes(prevShoes => prevShoes.filter(item => item.id !== shoe.id));
+      }
+      showToast('Shoe operation successful');
+      fetchShoes();
+    } catch (err) {
+      setError(err.response?.data?.error || 'An error occurred');
+      showToast('Error in shoe operation', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const addNewShoe = (shoe) => handleShoeAction(shoeAPI.addShoe, shoe);
+  const editShoe = (shoeData) => handleShoeAction(shoeAPI.updateShoe, shoeData, shoeData.id);
+  const removeShoe = (id) => handleShoeAction(() => shoeAPI.deleteShoe(id), { id });
+
+  const clearError = () => setError(null);
+
   return (
     <ShoeContext.Provider
       value={{
