@@ -5,9 +5,29 @@ const API = axios.create({ baseURL: '/api/v1' });
 API.interceptors.response.use(
     response => response,
     error => {
-        // Handle common HTTP errors here
-        if (error.response.status === 500) {
-            console.error('Server error');
+        if (!error.response) {
+            // Network error or request was not completed
+            console.error('Network error: Please check your internet connection.');
+        } else {
+            switch (error.response.status) {
+                case 400:
+                    console.error('Bad Request: The request was unacceptable.');
+                    break;
+                case 401:
+                    console.error('Unauthorized: Access is denied due to invalid credentials.');
+                    break;
+                case 403:
+                    console.error('Forbidden: You do not have the necessary permissions.');
+                    break;
+                case 404:
+                    console.error('Not Found: The requested resource does not exist.');
+                    break;
+                case 500:
+                    console.error('Internal Server Error: Something went wrong on the server.');
+                    break;
+                default:
+                    console.error(`An error occurred: ${error.response.status} - ${error.response.statusText}`);
+            }
         }
         return Promise.reject(error);
     }
