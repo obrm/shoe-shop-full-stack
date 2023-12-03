@@ -12,18 +12,24 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
         if (localStorage.token) {
             setAuthToken(localStorage.token);
-        }
 
-        try {
-            const res = await authAPI.getCurrentUser();
-            setUser(res.data.data);
-            setIsAuthenticated(true);
-        } catch (err) {
-            console.error(err.response.data.error);
-        } finally {
+            try {
+                const res = await authAPI.getCurrentUser();
+                setUser(res.data.data);
+                setIsAuthenticated(true);
+            } catch (err) {
+                console.error(err.response.data.error);
+                setUser(null);
+                setIsAuthenticated(false);
+                localStorage.removeItem('token');
+            } finally {
+                setLoading(false);
+            }
+        } else {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         loadUser();
