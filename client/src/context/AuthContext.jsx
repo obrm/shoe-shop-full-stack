@@ -9,17 +9,16 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+
     const loadUser = async () => {
         if (localStorage.token) {
             setAuthToken(localStorage.token);
-
             try {
                 const res = await authAPI.getCurrentUser();
                 setUser(res.data.data);
                 setIsAuthenticated(true);
             } catch (err) {
-                console.error(err.response.data.error);
-                setError(err.response.data.error);
+                handleError(err);
                 setUser(null);
                 setIsAuthenticated(false);
                 localStorage.removeItem('token');
@@ -31,35 +30,39 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
     useEffect(() => {
         loadUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleAuthSuccess = (res) => {
+        localStorage.setItem('token', res.data.token);
+        loadUser();
+        setAuthToken(res.data.token);
+        setUser(res.data.data);
+        setIsAuthenticated(true);
+    };
+
+    const handleError = (err) => {
+        const message = err.response?.data?.error || 'An unknown error occurred';
+        setError(message);
+    };
 
     const login = async (email, password) => {
         try {
             const res = await authAPI.login(email, password);
-            localStorage.setItem('token', res.data.token);
-            setAuthToken(res.data.token);
-            setUser(res.data.data);
-            setIsAuthenticated(true);
-            loadUser();
+            handleAuthSuccess(res);
         } catch (err) {
-            setError(err.response.data.error);
+            handleError(err);
         }
     };
 
     const register = async (formData) => {
         try {
             const res = await authAPI.register(formData);
-            localStorage.setItem('token', res.data.token);
-            setAuthToken(res.data.token);
-            setUser(res.data.data);
-            setIsAuthenticated(true);
-            loadUser();
+            handleAuthSuccess(res);
         } catch (err) {
-            const message = err.response.data.error === 'Duplicate field value entered' ? 'Email already exists' : err.response.data.error;
-            setError(message);
+            handleError(err);
         }
     };
 
@@ -74,17 +77,18 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const value = {
+        user,
+        isAuthenticated,
+        loading,
+        login,
+        register,
+        logout,
+        error
+    };
+
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                isAuthenticated,
-                loading,
-                login,
-                register,
-                logout,
-                error
-            }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );
