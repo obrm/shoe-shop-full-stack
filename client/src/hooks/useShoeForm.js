@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { getShoe } from '../api/api';
+import { shoeAPI } from '../api/api';
 import { useGlobalShoeContext } from './useGlobalShoeContext';
 
 const useShoeForm = (shoeId) => {
@@ -23,8 +23,8 @@ const useShoeForm = (shoeId) => {
     useEffect(() => {
         if (shoeId) {
             const fetchShoe = async () => {
-                const shoeData = await getShoe(shoeId);
-                setShoe(shoeData);
+                const shoeData = await shoeAPI.getShoe(shoeId);
+                setShoe(shoeData.data);
             };
 
             fetchShoe();

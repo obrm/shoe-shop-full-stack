@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 
-import { addShoe, updateShoe, deleteShoe, getAllShoes } from '../api/api';
+import { shoeAPI } from '../api/api';
 
 export const ShoeContext = createContext();
 
@@ -12,11 +12,11 @@ export const ShoeProvider = ({ children }) => {
 
   const fetchShoes = async () => {
     try {
-      const shoesData = await getAllShoes();
-      setShoes(shoesData);
+      const shoesData = await shoeAPI.getAllShoes();
+      setShoes(shoesData.data.data);
       setIsLoading(false);
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.error);
       setIsLoading(false);
     }
   };
@@ -27,35 +27,35 @@ export const ShoeProvider = ({ children }) => {
 
   const addNewShoe = async (shoe) => {
     try {
-      const newShoe = await addShoe(shoe);
+      const newShoe = await shoeAPI.addShoe(shoe);
       setShoes(prevShoes => ([...prevShoes, newShoe]));
       showToast('Shoe added successfully');
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.error);
     }
   };
 
   const editShoe = async (shoeData) => {
     try {
-      const updatedShoe = await updateShoe(shoeData, shoeData.id);
+      const updatedShoe = await shoeAPI.updateShoe(shoeData, shoeData.id);
       setShoes((prevShoes) =>
         prevShoes.map((shoe) => (shoe.id === shoeData.id ? updatedShoe : shoe))
       );
       showToast('Shoe updated successfully');
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.error);
     }
   };
 
   const removeShoe = async (id) => {
     try {
-      await deleteShoe(id);
+      await shoeAPI.deleteShoe(id);
       setShoes((prevShoes) =>
         prevShoes.filter((shoe) => (shoe.id !== id))
       );
       showToast('Shoe deleted successfully');
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.error);
     }
   };
 
