@@ -50,7 +50,7 @@ export const ShoeProvider = ({ children }) => {
     });
   };
 
-  const handleShoeAction = async (action, shoe, id = null) => {
+  const handleShoeAction = async (action, operation, shoe, id = null) => {
     setIsLoading(true);
     try {
       let response = null;
@@ -62,19 +62,19 @@ export const ShoeProvider = ({ children }) => {
         response = await action(shoe);
       }
 
-      showToast('Operation successful');
+      showToast(`Shoe ${operation}ed successfully`);
       fetchShoes();
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred');
-      showToast('Error in shoe operation', 'error');
+      showToast(`An error occurred while ${operation}ing the shoe`, 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const addNewShoe = (shoe) => handleShoeAction(shoeAPI.addShoe, shoe);
-  const editShoe = (shoeData) => handleShoeAction(shoeAPI.updateShoe, shoeData, shoeData.id);
-  const removeShoe = (id) => handleShoeAction(() => shoeAPI.deleteShoe(id), null, id);
+  const addNewShoe = (shoe) => handleShoeAction(shoeAPI.addShoe, 'add', shoe);
+  const editShoe = (shoeData) => handleShoeAction(shoeAPI.updateShoe, 'updat', shoeData, shoeData.id);
+  const removeShoe = (id) => handleShoeAction(() => shoeAPI.deleteShoe(id), 'delet', null, id);
 
   const clearError = () => setError(null);
 
