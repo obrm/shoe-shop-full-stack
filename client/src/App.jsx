@@ -72,7 +72,7 @@ function App() {
         });
       }
     }
-  }, [error, clearError, authError]);
+  }, [error, authError, clearError]);
 
   return (
     <>

@@ -82,9 +82,9 @@ html {
 }
 
 .not-found{
-  font-size: 2rem;
+  font-size: 3rem;
   text-align: center;
-  margin: 2rem auto;
+  margin: 10rem auto 8rem;
 }
 
 .login-info{

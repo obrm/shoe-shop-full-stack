@@ -16,7 +16,7 @@ const Home = () => {
 
     return (
         <section className='shoes-container'>
-            {shoes && shoes.map((shoe, idx) => {
+            {shoes.map((shoe, idx) => {
                 return (
                     <ShoeCard key={shoe.id || idx} {...shoe} />
                 );

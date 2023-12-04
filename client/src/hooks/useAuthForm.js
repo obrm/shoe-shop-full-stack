@@ -2,21 +2,21 @@ import { useState } from "react";
 import { useNavigate } from 'react-router';
 import { useGlobalAuthContext } from ".";
 
-const useAuthForm = (isRegister) => {
-  const navigate = useNavigate();
-  const { login, register } = useGlobalAuthContext();
-
+const useAuthForm = (isRegister) => {  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-  });
-
+  });  
   const [errors, setErrors] = useState({
     name: null,
     email: null,
     password: null
   });
+
+  const { login, register } = useGlobalAuthContext();
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -32,12 +32,14 @@ const useAuthForm = (isRegister) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     let isValid = true;
+
     const newErrors = {};
 
     if (isRegister) {
       if (formData.name.length < 3) {
-        newErrors.email = "Please enter a valid email address";
+        newErrors.email = "Name must be at least 3 characters long";
         isValid = false;
       }
     }
