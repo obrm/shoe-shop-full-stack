@@ -37,6 +37,8 @@ const useAuthForm = (isRegister) => {
 
     const newErrors = {};
 
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+
     if (isRegister) {
       if (formData.name.length < 3) {
         newErrors.name = "Name must be at least 3 characters long";
@@ -44,7 +46,7 @@ const useAuthForm = (isRegister) => {
       }
     }
 
-    if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(formData.email)) {
+    if (!emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
