@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { shoeAPI } from '../api/api';
+import { shoeAPI } from '../api';
 import { useGlobalShoeContext } from './useGlobalShoeContext';
 
 const useShoeForm = (shoeId) => {

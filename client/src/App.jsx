@@ -1,10 +1,7 @@
-import { useEffect, useRef } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-
-import { useGlobalAuthContext, useGlobalShoeContext } from './hooks';
 
 import {
   Auth,
@@ -56,23 +53,6 @@ const routes = [
 
 function App() {
   const router = createBrowserRouter(routes);
-
-  const toastId = useRef(null);
-
-  const { error, clearError } = useGlobalShoeContext();
-  const { error: authError } = useGlobalAuthContext();
-
-  useEffect(() => {
-    if (error || authError) {
-      const err = error || authError;
-      if (!toast.isActive(toastId.current)) {
-        toastId.current = toast.error(err, {
-          position: "top-center",
-          onClose: () => clearError()
-        });
-      }
-    }
-  }, [error, authError, clearError]);
 
   return (
     <>

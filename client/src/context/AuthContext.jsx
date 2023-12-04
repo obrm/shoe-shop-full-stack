@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { setAuthToken, authAPI } from '../api/api';
+import { setAuthToken, authAPI } from '../api';
+import { showToast } from '../utils';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
 
     const loadUser = async () => {
@@ -39,8 +39,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     const handleError = (err) => {
-        const message = err.response?.data?.error || 'An unknown error occurred';
-        setError(message);
+        let errorMessage = err.response.data.error;
+        if (errorMessage.includes('Duplicate')) {
+            errorMessage = 'This email is already in use';
+        } else if (!errorMessage) {
+            'An unknown error occurred';
+        }
+        showToast(errorMessage, 'error');
     };
 
     const login = async (email, password) => {
@@ -67,7 +72,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem('token');
             setUser(null);
         } catch (err) {
-            setError('An unknown error occurred');
+            handleError(err);            
         }
     };
 
@@ -77,7 +82,6 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
-        error
     };
 
     return (
