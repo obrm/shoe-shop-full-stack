@@ -37,8 +37,6 @@ export const getShoe = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/shoes
 // @access    Private
 export const addShoe = asyncHandler(async (req, res, next) => {
-  req.body.user = req.user.id;
-
   if (req.user.role !== 'admin') {
     return next(new ErrorResponse(`User with ID that ends with '${req.user.id.slice(-6)}' is not authorized to add a shoe`, 401));
   }

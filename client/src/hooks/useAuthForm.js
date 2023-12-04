@@ -39,7 +39,7 @@ const useAuthForm = (isRegister) => {
 
     if (isRegister) {
       if (formData.name.length < 3) {
-        newErrors.email = "Name must be at least 3 characters long";
+        newErrors.name = "Name must be at least 3 characters long";
         isValid = false;
       }
     }

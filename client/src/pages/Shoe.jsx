@@ -11,14 +11,14 @@ const Shoe = () => {
 
     const { user } = useGlobalAuthContext();
 
-    const { fetchShoe, currentShoe, isLoading, handleDeleteShoe } = useGlobalShoeContext();
+    const { fetchShoe, currentShoe, isLoading, removeShoe } = useGlobalShoeContext();
 
     useEffect(() => {
         fetchShoe(shoeId);
     }, [fetchShoe, shoeId]);
 
     const handleDelete = () => {
-        handleDeleteShoe(shoeId);
+        removeShoe(shoeId);
         navigate('/');
     };
 

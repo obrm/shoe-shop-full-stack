@@ -21,6 +21,8 @@ const useShoeForm = (shoeId) => {
     });
     const [loading, setLoading] = useState(false);
 
+    const { addNewShoe, editShoe } = useGlobalShoeContext();
+
     useEffect(() => {
         if (shoeId) {
             setLoading(true);
@@ -33,8 +35,6 @@ const useShoeForm = (shoeId) => {
             fetchShoe();
         }
     }, [shoeId]);
-
-    const { addNewShoe, editShoe } = useGlobalShoeContext();
 
     const handleChange = (e) => {
         setShoe({

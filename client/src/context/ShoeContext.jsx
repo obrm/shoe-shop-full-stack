@@ -62,7 +62,7 @@ export const ShoeProvider = ({ children }) => {
         response = await action(shoe);
       }
 
-      showToast('Shoe operation successful');
+      showToast('Operation successful');
       fetchShoes();
     } catch (err) {
       setError(err.response?.data?.error || 'An error occurred');
@@ -70,11 +70,6 @@ export const ShoeProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDeleteShoe = async (shoeId) => {
-    await handleShoeAction(shoeAPI.deleteShoe, null, shoeId);
-    fetchShoes();
   };
 
   const addNewShoe = (shoe) => handleShoeAction(shoeAPI.addShoe, shoe);
@@ -94,7 +89,6 @@ export const ShoeProvider = ({ children }) => {
         addNewShoe,
         editShoe,
         removeShoe,
-        handleDeleteShoe,
         clearError
       }}>
       {children}
