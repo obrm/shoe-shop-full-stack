@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_ENV === 'development'
+    ? import.meta.env.VITE_BASE_URL_DEVELOPMENT
+    : import.meta.env.VITE_BASE_URL_PRODUCTION;
+
 // Create a new instance of the axios library with a base URL of '/api/v1'
-const API = axios.create({ baseURL: '/api/v1' });
+const API = axios.create({ baseURL });
 
 // Add a response interceptor that handles errors
 API.interceptors.response.use(
@@ -9,7 +13,7 @@ API.interceptors.response.use(
     (response) => response,
     // Handle errors
     (error) => {
-    // Check if there is a response
+        // Check if there is a response
         if (!error.response) {
             // There was a network error
             console.error('Network error: Please check your internet connection.');
