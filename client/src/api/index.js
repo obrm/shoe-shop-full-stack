@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL = import.meta.env.VITE_ENV === 'development'
     ? import.meta.env.VITE_BASE_URL_DEVELOPMENT
     : import.meta.env.VITE_BASE_URL_PRODUCTION;
-
+console.log(baseURL);
 // Create a new instance of the axios library with a base URL of '/api/v1'
 const API = axios.create({ baseURL });
 
