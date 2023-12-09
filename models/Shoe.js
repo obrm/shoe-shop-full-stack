@@ -4,15 +4,18 @@ const ShoeSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: [true, 'Please add a shoe name']
+    required: [true, 'Please add a shoe name'],
+    minlength: [3, 'Name must be at least 3 characters long']
   },
   brand: {
     type: String,
-    required: [true, 'Please add a brand']
+    required: [true, 'Please add a brand'],
+    minlength: [2, 'Brand must be at least 2 characters long']
   }, 
   price: {
     type: Number,
-    required: [true, 'Please add price']
+    required: [true, 'Please add price'],
+    min: [1, 'Price must be greater than 1$']
   },
   image: {
     type: String,
