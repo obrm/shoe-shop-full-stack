@@ -18,6 +18,7 @@ export const ShoeProvider = ({ children }) => {
       setShoes(response.data.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
+      console.error((err.response?.data?.error || 'An error occurred', 'error'));
     } finally {
       setIsLoading(false);
     }
@@ -30,6 +31,7 @@ export const ShoeProvider = ({ children }) => {
       setCurrentShoe(response.data.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
+      console.error((err.response?.data?.error || 'An error occurred', 'error'));
     } finally {
       setIsLoading(false);
     }
@@ -55,6 +57,7 @@ export const ShoeProvider = ({ children }) => {
       fetchShoes();
     } catch (err) {
       showToast(`An error occurred while ${operation}ing the shoe`, 'error');
+      console.error((err.response?.data?.error || 'An error occurred', 'error'));
     } finally {
       setIsLoading(false);
     }

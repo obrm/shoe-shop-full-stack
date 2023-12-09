@@ -41,7 +41,7 @@ export const addShoe = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse(`User with ID that ends with '${req.user.id.slice(-6)}' is not authorized to add a shoe`, 401));
   }
 
-  let shoe = await Shoe.create(req.body);
+  const shoe = await Shoe.create(req.body);
 
   res.status(200).json({
     success: true,

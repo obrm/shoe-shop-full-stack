@@ -17,6 +17,10 @@ const ShoeSchema = new mongoose.Schema({
   image: {
     type: String,
     required: [true, 'Please add an image string'],
+    match: [
+      /(https?:\/\/.*\.(?:png|jpg|jpeg))/,
+      'Image url is not valid'
+    ]
   },
   createdAt: {
     type: Date,

@@ -70,8 +70,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use('/api/v1/shoes', shoes);
-app.use('/api/v1/auth', auth);
+app.use('/api/v1/shoes', shoes); // http://localhost:5000/api/v1/shoes
+app.use('/api/v1/auth', auth); // http://localhost:5000/api/v1/auth
 
 app.use(errorHandler);
 
