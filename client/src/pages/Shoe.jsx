@@ -46,7 +46,7 @@ const Shoe = () => {
                 {user && user.role === 'admin' && (
                     <>
                         <Link
-                            to={`/products/${currentShoe.id}/edit`}
+                            to={`/shoe/${currentShoe.id}/edit`}
                             className="btn"
                         >
                             Edit

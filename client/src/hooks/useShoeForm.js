@@ -21,14 +21,14 @@ const useShoeForm = (shoeId) => {
     });
     const [loading, setLoading] = useState(false);
 
-    const { addNewShoe, editShoe } = useGlobalShoeContext();
+    const { currentShoe, addNewShoe, editShoe } = useGlobalShoeContext();
 
     useEffect(() => {
         if (shoeId) {
             setLoading(true);
             const fetchShoe = async () => {
                 const shoeData = await shoeAPI.getShoe(shoeId);
-                setShoe(shoeData.data.data);
+                setShoe(shoeData.data);
                 setLoading(false);
             };
 
@@ -48,7 +48,7 @@ const useShoeForm = (shoeId) => {
             }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let isValid = true;
         const newErrors = {};
@@ -84,10 +84,11 @@ const useShoeForm = (shoeId) => {
         if (isValid) {
             if (shoeId) {
                 editShoe(shoe);
+                navigate(`/shoe/${shoeId}`);
             } else {
-                addNewShoe(shoe);
+                const newShoeId = await addNewShoe(shoe);
+                navigate(`/shoe/${newShoeId}`);
             }
-            navigate('/');
         }
     };
 

@@ -31,7 +31,7 @@ const routes = [
         element: <Auth />,
       },
       {
-        path: 'products',
+        path: 'shoe',
         children: [
           {
             path: ':shoeId',

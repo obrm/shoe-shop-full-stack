@@ -15,7 +15,7 @@ export const ShoeProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await shoeAPI.getAllShoes();
-      setShoes(response.data.data);
+      setShoes(response.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
       console.error((err.response?.data?.error || 'An error occurred', 'error'));
@@ -28,7 +28,7 @@ export const ShoeProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await shoeAPI.getShoe(shoeId);
-      setCurrentShoe(response.data.data);
+      setCurrentShoe(response.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
       console.error((err.response?.data?.error || 'An error occurred', 'error'));
@@ -41,31 +41,49 @@ export const ShoeProvider = ({ children }) => {
     fetchShoes();
   }, []);
 
-  const handleShoeAction = async (action, operation, shoe, id = null) => {
+  const addNewShoe = async (shoe) => {
     setIsLoading(true);
     try {
-      let response = null;
-      if (!shoe) {
-        await action(id);
-      } else if (id) {
-        response = await action(shoe, id);
-      } else {
-        response = await action(shoe);
-      }
-
-      showToast(`Shoe ${operation}ed successfully`);
-      fetchShoes();
+      const response = await shoeAPI.addShoe(shoe);
+      showToast('Shoe added successfully');
+      return response.data.id;
     } catch (err) {
-      showToast(`An error occurred while ${operation}ing the shoe`, 'error');
-      console.error((err.response?.data?.error || 'An error occurred', 'error'));
+      handleError('An error occurred while adding the shoe');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const addNewShoe = (shoe) => handleShoeAction(shoeAPI.addShoe, 'add', shoe);
-  const editShoe = (shoeData) => handleShoeAction(shoeAPI.updateShoe, 'updat', shoeData, shoeData.id);
-  const removeShoe = (id) => handleShoeAction(() => shoeAPI.deleteShoe(id), 'delet', null, id);
+  const editShoe = async (shoeData) => {
+    setIsLoading(true);
+    try {
+      const response = await shoeAPI.updateShoe(shoeData, shoeData.id);
+      setCurrentShoe(response.data);
+      showToast('Shoe updated successfully');
+    } catch (err) {
+      handleError('An error occurred while updating the shoe');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const removeShoe = async (id) => {
+    setIsLoading(true);
+    try {
+      await shoeAPI.deleteShoe(id);
+      showToast('Shoe deleted successfully');
+      fetchShoes();
+    } catch (err) {
+      handleError('An error occurred while deleting the shoe');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleError = (err, message) => {
+    showToast(message, 'error');
+    console.error((err.response?.data?.error || 'An error occurred', 'error'));
+  };
 
   return (
     <ShoeContext.Provider
