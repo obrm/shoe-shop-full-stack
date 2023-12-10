@@ -45,7 +45,7 @@ export const ShoeProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await shoeAPI.addShoe(shoe);
-      showToast('Shoe added successfully');
+      handleSuccess('Shoe added successfully');
       return response.data.id;
     } catch (err) {
       handleError('An error occurred while adding the shoe');
@@ -54,12 +54,11 @@ export const ShoeProvider = ({ children }) => {
     }
   };
 
-  const editShoe = async (shoeData) => {
+  const editShoe = async (shoe) => {
     setIsLoading(true);
     try {
-      const response = await shoeAPI.updateShoe(shoeData, shoeData.id);
-      setCurrentShoe(response.data);
-      showToast('Shoe updated successfully');
+      await shoeAPI.updateShoe(shoe, shoe.id);
+      handleSuccess('Shoe updated successfully');
     } catch (err) {
       handleError('An error occurred while updating the shoe');
     } finally {
@@ -71,14 +70,18 @@ export const ShoeProvider = ({ children }) => {
     setIsLoading(true);
     try {
       await shoeAPI.deleteShoe(id);
-      showToast('Shoe deleted successfully');
-      fetchShoes();
+      handleSuccess('Shoe deleted successfully');
     } catch (err) {
       handleError('An error occurred while deleting the shoe');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleSuccess = (message) => {
+    fetchShoes();
+    showToast(message);
+  }
 
   const handleError = (err, message) => {
     showToast(message, 'error');
