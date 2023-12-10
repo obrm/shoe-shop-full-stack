@@ -8,13 +8,12 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
 
-
     const loadUser = async () => {
         if (localStorage.token) {
             setAuthToken(localStorage.token);
             try {
                 const res = await authAPI.getCurrentUser();
-                setUser(res.data.data);
+                setUser(res.data);
             } catch (err) {
                 handleError(err);
                 setUser(null);
@@ -33,9 +32,8 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const handleAuthSuccess = (res) => {
-        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('token', res.data);
         loadUser();
-        setUser(res.data.data);
     };
 
     const handleError = (err) => {

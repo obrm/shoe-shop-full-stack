@@ -63,10 +63,7 @@ export const logout = asyncHandler(async (req, res, next) => {
     */
   });
 
-  res.status(200).json({
-    success: true,
-    data: {}
-  });
+  res.status(200).json({});
 });
 
 // @desc    Get current logged in user
@@ -75,8 +72,5 @@ export const logout = asyncHandler(async (req, res, next) => {
 export const getCurrentUser = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
-  res.status(200).json({
-    success: true,
-    data: user
-  });
+  res.status(200).json(user);
 });
