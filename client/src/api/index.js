@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 // baseURL in Development
-// const baseURL = import.meta.env.VITE_BASE_URL_DEVELOPMENT; // http://localhost:5000/api/v1/
-
-const baseURL = import.meta.env.VITE_ENV === 'development'
-    ? import.meta.env.VITE_BASE_URL_DEVELOPMENT
-    : import.meta.env.VITE_BASE_URL_PRODUCTION;
+const baseURL = import.meta.env.VITE_BASE_URL_DEVELOPMENT;
 
 // Create a new instance of the axios library with a base URL of '/api/v1'
 const API = axios.create({ baseURL });
