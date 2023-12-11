@@ -9,50 +9,21 @@ const API = axios.create({ baseURL });
 
 // Add a response interceptor that handles errors
 API.interceptors.response.use(
-    // Return the response data
-    (response) => response,
-    // Handle errors
-    (error) => {
-        // Check if there is a response
+    response => response,
+    error => {
         if (!error.response) {
-            // There was a network error
             showToast('Network error: Please check your internet connection.', 'error');
             console.error('Network error: Please check your internet connection.');
-            // Return the error
-            return Promise.reject(error);
+            return Promise.reject(new Error('Network error: Please check your internet connection.'));
         }
 
-        // Get the status code from the response
-        const statusCode = error.response.status;
+        const { status, data, statusText } = error.response;
 
-        // Based on the status code, handle the error
-        switch (statusCode) {
-            case 400:
-                showToast('Bad Request: The request was unacceptable.', 'error');
-                console.error('Bad Request: The request was unacceptable.');
-                break;
-            case 401:
-                showToast('Unauthorized: Access is denied due to invalid credentials.', 'error');
-                console.error('Unauthorized: Access is denied due to invalid credentials.');
-                break;
-            case 403:
-                showToast('Forbidden: You do not have the necessary permissions.', 'error');
-                console.error('Forbidden: You do not have the necessary permissions.');
-                break;
-            case 404:
-                showToast('Not Found: The requested resource does not exist.', 'error');
-                console.error('Not Found: The requested resource does not exist.');
-                break;
-            case 500:
-                showToast('Internal Server Error: Something went wrong on the server.', 'error');
-                console.error('Internal Server Error: Something went wrong on the server.');
-                break;
-            default:
-                showToast(`An error occurred: ${statusCode} - ${error.response.statusText}`, 'error');
-                console.error(`An error occurred: ${statusCode} - ${error.response.statusText}`);
-        }
+        let message = data?.error || statusText || 'An error occurred';
 
-        // Return the error
+        showToast(`${status} - ${message}`, 'error');
+        console.error(`${status} - ${message}`);
+
         return Promise.reject(error);
     }
 );
