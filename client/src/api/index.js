@@ -21,7 +21,6 @@ API.interceptors.response.use(
 
         let message = data?.error || statusText || 'An error occurred';
 
-        showToast(`${status} - ${message}`, 'error');
         console.error(`${status} - ${message}`);
 
         return Promise.reject(error);

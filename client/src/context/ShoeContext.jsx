@@ -18,7 +18,6 @@ export const ShoeProvider = ({ children }) => {
       setShoes(response.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
-      console.error((err.response?.data?.error || 'An error occurred', 'error'));
     } finally {
       setIsLoading(false);
     }
@@ -31,7 +30,6 @@ export const ShoeProvider = ({ children }) => {
       setCurrentShoe(response.data);
     } catch (err) {
       showToast(err.response?.data?.error || 'An error occurred', 'error');
-      console.error((err.response?.data?.error || 'An error occurred', 'error'));
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +46,7 @@ export const ShoeProvider = ({ children }) => {
       handleSuccess('Shoe added successfully');
       return response.data.id;
     } catch (err) {
-      handleError('An error occurred while adding the shoe');
+      showToast('An error occurred while adding the shoe', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +58,7 @@ export const ShoeProvider = ({ children }) => {
       await shoeAPI.updateShoe(shoe, shoe.id);
       handleSuccess('Shoe updated successfully');
     } catch (err) {
-      handleError('An error occurred while updating the shoe');
+      showToast('An error occurred while updating the shoe', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +70,7 @@ export const ShoeProvider = ({ children }) => {
       await shoeAPI.deleteShoe(id);
       handleSuccess('Shoe deleted successfully');
     } catch (err) {
-      handleError('An error occurred while deleting the shoe');
+      showToast('An error occurred while deleting the shoe', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -81,12 +79,7 @@ export const ShoeProvider = ({ children }) => {
   const handleSuccess = (message) => {
     fetchShoes();
     showToast(message);
-  }
-
-  const handleError = (err, message) => {
-    showToast(message, 'error');
-    console.error((err.response?.data?.error || 'An error occurred', 'error'));
-  };
+  }  
 
   return (
     <ShoeContext.Provider
