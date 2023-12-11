@@ -2,9 +2,6 @@ import axios from 'axios';
 
 import { showToast } from '../utils';
 
-// baseURL in Development
-// const baseURL = import.meta.env.VITE_BASE_URL_DEVELOPMENT; // http://localhost:5000/api/v1/
-
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 // Create a new instance of the axios library with a base URL of '/api/v1'
@@ -19,7 +16,7 @@ API.interceptors.response.use(
         // Check if there is a response
         if (!error.response) {
             // There was a network error
-            showToast('Network error: Please check your internet connection.');
+            showToast('Network error: Please check your internet connection.', 'error');
             console.error('Network error: Please check your internet connection.');
             // Return the error
             return Promise.reject(error);
@@ -31,27 +28,27 @@ API.interceptors.response.use(
         // Based on the status code, handle the error
         switch (statusCode) {
             case 400:
-                showToast('Bad Request: The request was unacceptable.');
+                showToast('Bad Request: The request was unacceptable.', 'error');
                 console.error('Bad Request: The request was unacceptable.');
                 break;
             case 401:
-                showToast('Unauthorized: Access is denied due to invalid credentials.');
+                showToast('Unauthorized: Access is denied due to invalid credentials.', 'error');
                 console.error('Unauthorized: Access is denied due to invalid credentials.');
                 break;
             case 403:
-                showToast('Forbidden: You do not have the necessary permissions.');
+                showToast('Forbidden: You do not have the necessary permissions.', 'error');
                 console.error('Forbidden: You do not have the necessary permissions.');
                 break;
             case 404:
-                showToast('Not Found: The requested resource does not exist.');
+                showToast('Not Found: The requested resource does not exist.', 'error');
                 console.error('Not Found: The requested resource does not exist.');
                 break;
             case 500:
-                showToast('Internal Server Error: Something went wrong on the server.');
+                showToast('Internal Server Error: Something went wrong on the server.', 'error');
                 console.error('Internal Server Error: Something went wrong on the server.');
                 break;
             default:
-                showToast(`An error occurred: ${statusCode} - ${error.response.statusText}`);
+                showToast(`An error occurred: ${statusCode} - ${error.response.statusText}`, 'error');
                 console.error(`An error occurred: ${statusCode} - ${error.response.statusText}`);
         }
 
