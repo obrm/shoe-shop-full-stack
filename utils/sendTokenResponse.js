@@ -19,7 +19,7 @@ const sendTokenResponse = (user, statusCode, res) => {
   res
     .status(statusCode)
     .cookie('token', token, options)
-    .json(token);
+    .json(user);
 };
 
 export default sendTokenResponse;
