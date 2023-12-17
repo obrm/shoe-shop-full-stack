@@ -8,20 +8,20 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    const loadUser = async () => {
-        try {
-            const res = await authAPI.getCurrentUser();
-            setUser(res.data);
-        } catch (err) {
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
+        const loadUser = async () => {
+            try {
+                const res = await authAPI.getCurrentUser();
+                setUser(res.data);
+            } catch (err) {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         loadUser();            
-        // eslint-disable-next-line
     }, []);
 
     const handleError = (err) => {
