@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         try {
             await authAPI.logout();
             setUser(null);
-            window.location.reload();
+            // window.location.reload();
         } catch (err) {
             handleError(err);
         }
