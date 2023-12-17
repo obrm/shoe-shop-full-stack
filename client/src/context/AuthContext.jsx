@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const res = await authAPI.login(email, password);
+            console.log(res.data)
             setUser(res.data);
         } catch (err) {
             handleError(err);
