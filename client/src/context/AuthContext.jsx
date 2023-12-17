@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { setAuthToken, authAPI } from '../api';
+import { authAPI } from '../api';
 import { showToast } from '../utils';
 
 export const AuthContext = createContext();
@@ -9,19 +9,13 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const loadUser = async () => {
-        if (localStorage.token) {
-            setAuthToken(localStorage.token);
-            try {
-                const res = await authAPI.getCurrentUser();
-                setUser(res.data);
-            } catch (err) {
-                handleError(err);
-                setUser(null);
-                localStorage.removeItem('token');
-            } finally {
-                setLoading(false);
-            }
-        } else {
+        try {
+            const res = await authAPI.getCurrentUser();
+            setUser(res.data);
+        } catch (err) {
+            handleError(err);
+            setUser(null);
+        } finally {
             setLoading(false);
         }
     };
@@ -31,25 +25,18 @@ export const AuthProvider = ({ children }) => {
         // eslint-disable-next-line
     }, []);
 
-    const handleAuthSuccess = (res) => {
-        localStorage.setItem('token', res.data);
-        loadUser();
-    };
-
     const handleError = (err) => {
-        let errorMessage = err.response.data.error;
+        let errorMessage = err.response?.data?.error || 'An unknown error occurred';
         if (errorMessage.includes('Duplicate')) {
             errorMessage = 'This email is already in use';
-        } else if (!errorMessage) {
-            'An unknown error occurred';
         }
         showToast(errorMessage, 'error');
     };
 
     const login = async (email, password) => {
         try {
-            const res = await authAPI.login(email, password);
-            handleAuthSuccess(res);
+            await authAPI.login(email, password);
+            loadUser();
         } catch (err) {
             handleError(err);
         }
@@ -57,8 +44,8 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (formData) => {
         try {
-            const res = await authAPI.register(formData);
-            handleAuthSuccess(res);
+            await authAPI.register(formData);
+            loadUser();
         } catch (err) {
             handleError(err);
         }
@@ -67,24 +54,13 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             await authAPI.logout();
-            localStorage.removeItem('token');
             setUser(null);
         } catch (err) {
-            handleError(err);            
+            handleError(err);
         }
     };
 
-    const value = {
-        user,
-        loading,
-        login,
-        register,
-        logout,
-    };
+    const value = { user, loading, login, register, logout };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

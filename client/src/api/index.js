@@ -27,15 +27,6 @@ API.interceptors.response.use(
     }
 );
 
-// Set the authorization token in the headers
-export const setAuthToken = (token) => {
-    if (token) {
-        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-        delete API.defaults.headers.common['Authorization'];
-    }
-};
-
 // Auth API endpoints
 export const authAPI = {
     // Register a new user
