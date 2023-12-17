@@ -5,7 +5,7 @@ import { showToast } from '../utils';
 // Create a new instance of the axios library with a base URL of '/api/v1'
 const API = axios.create({ 
     baseURL: import.meta.env.VITE_BASE_URL,
-    withCredentials: true
+    // withCredentials: true
 });
 
 // Add a response interceptor that handles errors
