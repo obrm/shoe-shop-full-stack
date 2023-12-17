@@ -21,7 +21,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        loadUser();
+        if (user) {
+            loadUser();            
+        }
         // eslint-disable-next-line
     }, []);
 
