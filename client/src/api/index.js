@@ -2,13 +2,11 @@ import axios from 'axios';
 
 import { showToast } from '../utils';
 
-const baseURL = import.meta.env.VITE_BASE_URL;
-
 // Create a new instance of the axios library with a base URL of '/api/v1'
-const API = axios.create({
-    baseURL,
+const API = axios.create({ 
+    baseURL: import.meta.env.VITE_BASE_URL,
     withCredentials: true
-});  
+});
 
 // Add a response interceptor that handles errors
 API.interceptors.response.use(

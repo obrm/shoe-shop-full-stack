@@ -53,7 +53,7 @@ app.use(hpp());
   CORS is a web security mechanism that allows web applications to access resources hosted on other domains while protecting against unauthorized access and web-based attacks.
 */
 const corsOptions = {
-  origin: 'https://obrm-naalaim-cookies.netlify.app',
+  origin: process.env.FRONTEND_URL, // Replace with your frontend URL
   credentials: true,
 };
 
