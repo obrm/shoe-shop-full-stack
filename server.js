@@ -52,7 +52,12 @@ app.use(hpp());
 /*
   CORS is a web security mechanism that allows web applications to access resources hosted on other domains while protecting against unauthorized access and web-based attacks.
 */
-app.use(cors());
+const corsOptions = {
+  origin: 'https://obrm-naalaim-cookies.netlify.app',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Rate limiting
 const limiter = rateLimit({
