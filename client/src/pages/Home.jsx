@@ -13,7 +13,7 @@ const Home = () => {
     if (isLoading) {
         return <div className='loading'>Loading...</div>;
     }
-    console.log(shoes)
+
     return (
         <section className='shoes-container'>
             {shoes.map((shoe, idx) => {
