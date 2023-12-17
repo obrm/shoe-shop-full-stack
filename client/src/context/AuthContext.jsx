@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
             const res = await authAPI.getCurrentUser();
             setUser(res.data);
         } catch (err) {
-            handleError(err);
             setUser(null);
         } finally {
             setLoading(false);
@@ -21,9 +20,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (user) {
-            loadUser();            
-        }
+        loadUser();            
         // eslint-disable-next-line
     }, []);
 
