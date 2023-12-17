@@ -56,12 +56,11 @@ export const logout = asyncHandler(async (req, res, next) => {
   res.cookie('token', null, {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
-    secure: true, // if you are using HTTPS
-    sameSite: 'strict' // to prevent CSRF (Cross-Site Request Forgery) attacks
-    /*
-       CSRF is a type of web security vulnerability that allows an attacker to perform unwanted actions on behalf of an authenticated user. The attack occurs when a malicious website or script makes a request to a legitimate website where the user is already authenticated.
-    */
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax',
+    path: '/'
   });
+
 
   res.status(200).json({});
 });

@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
         try {
             await authAPI.logout();
             setUser(null);
+            // window.location.href = '/';
         } catch (err) {
             handleError(err);
         }
