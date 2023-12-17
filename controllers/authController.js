@@ -56,7 +56,7 @@ export const logout = asyncHandler(async (req, res, next) => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000), // 10 seconds to expire
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Use secure flag in production
+    secure: true,
     sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Adjust for cross-site requests
     path: '/' // Set the path for the cookie
   });
