@@ -14,21 +14,24 @@ const sendTokenResponse = (user, statusCode, res) => {
     httpOnly: true,
 
     // 'secure' is a flag that indicates whether the cookie should be sent only over HTTPS.
-    // This is set to true for security reasons, ensuring that the cookie is only sent 
+    // This is set to true in production for security reasons, ensuring that the cookie is only sent 
     // over secure, encrypted connections.
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
 
     // 'sameSite' controls whether the cookie should be sent in cross-site requests.
     // It helps prevent CSRF (Cross-Site Request Forgery) attacks.
     // 'None' means the cookie will be sent in all contexts, i.e., in responses to both first-party 
     // and cross-origin requests. If 'None' is set, the 'secure' attribute must also be set.
-    // It's set to 'None'to allow cookies in cross-domain/origin requests, assuming a secure (HTTPS) environment.
-    sameSite: 'None'
+    // 'Lax' allows the cookie to be sent in top-level navigations and will be sent along with GET requests initiated by third-party websites.
+    // It's set to 'None' in production to allow cookies in cross-domain/origin requests, assuming a secure (HTTPS) environment.
+    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
   };
 
+  // It's up to the client-side to decide how to handle the token
   res
     .status(statusCode)
-    .cookie('token', token, options);
+    .cookie('token', token, options)
+    .json(token);
 };
 
 export default sendTokenResponse;
