@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            await authAPI.login(email, password);
-            loadUser();
+            const res = await authAPI.login(email, password);
+            setUser(res.data);
         } catch (err) {
             handleError(err);
         }
@@ -46,8 +46,8 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (formData) => {
         try {
-            await authAPI.register(formData);
-            loadUser();
+            const res = await authAPI.register(formData);
+            setUser(res.data);
         } catch (err) {
             handleError(err);
         }
