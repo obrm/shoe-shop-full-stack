@@ -53,11 +53,15 @@ export const loginUser = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/auth/logout
 // @access  Private
 export const logout = asyncHandler(async (req, res, next) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000), // 10 seconds to expire
     httpOnly: true,
-    secure: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Adjust for cross-site requests
+    // Set secure to true in production; false in development
+    secure: isProduction,
+    // Adjust sameSite for cross-site requests in production, and Lax in development
+    sameSite: isProduction ? 'None' : 'Lax',
     path: '/' // Set the path for the cookie
   });
 
