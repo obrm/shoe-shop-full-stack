@@ -5,20 +5,7 @@ import User from '../models/User.js';
 
 // Protect Routes
 export const protect = asyncHandler(async (req, res, next) => {
-  let token;
-
-  if (
-    // We can access the token from the header with req.headers.authorization
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    // Format it - remove Bearer from string - turn into array and return the second index
-     // Set token from Bearer token in header
-    token = req.headers.authorization.split(' ')[1];
-    // Set token from cookie
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
-  }
+  const token = req.cookies.token;
 
   // Make sure token exists
   if (!token) {

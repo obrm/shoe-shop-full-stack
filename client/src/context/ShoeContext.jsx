@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
+import { toast } from 'react-toastify';
 
 import { shoeAPI } from '../api';
 
-import { showToast } from '../utils';
 
 export const ShoeContext = createContext();
 
@@ -17,7 +17,7 @@ export const ShoeProvider = ({ children }) => {
       const response = await shoeAPI.getAllShoes();
       setShoes(response.data);
     } catch (err) {
-      showToast(err.response?.data?.error || 'An error occurred', 'error');
+      toast.error(err.response?.data?.error || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -29,7 +29,7 @@ export const ShoeProvider = ({ children }) => {
       const response = await shoeAPI.getShoe(shoeId);
       setCurrentShoe(response.data);
     } catch (err) {
-      showToast(err.response?.data?.error || 'An error occurred', 'error');
+      toast.error(err.response?.data?.error || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +46,7 @@ export const ShoeProvider = ({ children }) => {
       handleSuccess('Shoe added successfully');
       return response.data.id;
     } catch (err) {
-      showToast('An error occurred while adding the shoe', 'error');
+      toast.error('An error occurred while adding the shoe');
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +58,7 @@ export const ShoeProvider = ({ children }) => {
       await shoeAPI.updateShoe(shoe, shoe.id);
       handleSuccess('Shoe updated successfully');
     } catch (err) {
-      showToast('An error occurred while updating the shoe', 'error');
+      toast.error('An error occurred while updating the shoe');
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +70,7 @@ export const ShoeProvider = ({ children }) => {
       await shoeAPI.deleteShoe(id);
       handleSuccess('Shoe deleted successfully');
     } catch (err) {
-      showToast('An error occurred while deleting the shoe', 'error');
+      toast.error('An error occurred while deleting the shoe');
     } finally {
       setIsLoading(false);
     }
@@ -78,7 +78,7 @@ export const ShoeProvider = ({ children }) => {
 
   const handleSuccess = (message) => {
     fetchShoes();
-    showToast(message);
+    toast.success(message);
   }  
 
   return (

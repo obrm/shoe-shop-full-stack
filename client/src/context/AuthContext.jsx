@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+
 import { authAPI } from '../api';
-import { showToast } from '../utils';
 
 export const AuthContext = createContext();
 
@@ -29,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         if (errorMessage.includes('Duplicate')) {
             errorMessage = 'This email is already in use';
         }
-        showToast(errorMessage, 'error');
+        toast.error(errorMessage);
     };
 
     const login = async (email, password) => {

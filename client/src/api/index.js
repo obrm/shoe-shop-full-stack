@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { showToast } from '../utils';
+import { toast } from 'react-toastify';
 
 // Create a new instance of the axios library with a base URL of '/api/v1'
 const API = axios.create({ 
@@ -13,7 +13,7 @@ API.interceptors.response.use(
     response => response,
     error => {
         if (!error.response) {
-            showToast('Network error: Please check your internet connection.', 'error');
+            toast.error('Network error: Please check your internet connection.', 'error');
             console.error('Network error: Please check your internet connection.');
             return Promise.reject(new Error('Network error: Please check your internet connection.'));
         }
